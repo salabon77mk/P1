@@ -85,15 +85,4 @@ static int isUserPID(long processNum){
 }
 
 
-int main(){
-	long int someArray[256] = { 0 };
-	long int *ptrArr = someArray;
-	ptrArr = getPID(someArray, sizeof(someArray));
-	
-	for(int i = 0; i < sizeof(someArray)/sizeof(long int); i++){
-		printf("%ld\n", ptrArr[i]);
-	}
-	
 
-	return 0;	
-}
