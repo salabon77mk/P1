@@ -14,10 +14,10 @@
 static int isUserPID(long processNum);
 
 
-long int * getPID(){
+long int * getPID(long int * arr, size_t size){
 	struct dirent *dp;
-	long int userPIDs[1024];
-	long int *PIDs = userPIDs;
+	int arrElement = 0;
+	long int *ptrArr = arr;
 
 	DIR *dir = opendir("/proc");
 
@@ -28,16 +28,16 @@ long int * getPID(){
 
 		long int pidNum = strtol(dp->d_name, NULL, 10);
 		int i = isUserPID(pidNum);
-
-		
-		if( i  == 1){
-			userPIDs[i] = pidNum;		
-		  	count++;
+//		printf("PIDNUM %ld\n", pidNum);
+//		printf("AM I UNDER USER %d\n", i);		
+		if( i  == 1 && arrElement < size/(sizeof(long int) )){
+			ptrArr[arrElement] = pidNum;
+			arrElement++;		
 		}
 		
-
 	}
-	return PIDs;	
+	arr = ptrArr;
+	return arr;	
 
 }
 
@@ -62,12 +62,12 @@ static int isUserPID(long processNum){
 			char minUID[4]; //we only need the first four dig to see if its a UUSER
 			strncpy(minUID, line + 5, 4);
 			long int UID = strtol(minUID, NULL, 10);
-			/*
-			printf("Line: %s", line);
-			printf("String: %s\n", minUID);
-			printf("UID: %ld\n\n", UID);
-			*/
+			
+		
 			if(UID >= 1000){
+//				printf("Line: %s", line);
+//				printf("String: %s\n", minUID);
+//				printf("UID: %ld\n\n", UID);
 				fclose(fptr);
 				return 1;
 			}
@@ -86,9 +86,14 @@ static int isUserPID(long processNum){
 
 
 int main(){
-	long int * gimme = getPID();
+	long int someArray[256] = { 0 };
+	long int *ptrArr = someArray;
+	ptrArr = getPID(someArray, sizeof(someArray));
 	
-
+	for(int i = 0; i < sizeof(someArray)/sizeof(long int); i++){
+		printf("%ld\n", ptrArr[i]);
+	}
+	
 
 	return 0;	
 }
