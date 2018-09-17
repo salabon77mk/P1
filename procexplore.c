@@ -1,12 +1,11 @@
 // Proc Explore
-
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <dirent.h>
 #include <string.h>
 #include <ctype.h>
-
+#include "procexplore.h"
 
 //First function should return only the PID specified
 
@@ -30,7 +29,7 @@ long int * getPID(long int * arr, size_t size){
 		int i = isUserPID(pidNum);
 //		printf("PIDNUM %ld\n", pidNum);
 //		printf("AM I UNDER USER %d\n", i);		
-		if( i  == 1 && arrElement < size/(sizeof(long int) )){
+		if( i  == 1 && arrElement < size / (sizeof(long int) )){
 			ptrArr[arrElement] = pidNum;
 			arrElement++;		
 		}
@@ -93,5 +92,12 @@ static int isUserPID(long processNum){
 	
 }
 
+size_t totalElements(long int *arr, size_t arrSize){
+	size_t count = 0;
+	for(int i = 0; i < arrSize/sizeof(long int); i++){
+		count++;			
+	}
+	return count;
 
+}
 
