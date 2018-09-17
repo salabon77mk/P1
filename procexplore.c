@@ -1,6 +1,6 @@
 // Proc Explore
 
-
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <dirent.h>
@@ -58,11 +58,20 @@ static int isUserPID(long processNum){
 	while(fgets(line, 100, fptr)){
 		
 		if(strncmp(line, "Uid:", 4) == 0){
-			
+			long int uid  = getuid();
+			int uidLen = 0;
+			//get digit count
+			while(uid != 0){
+				uid /= 10;
+				uidLen++;
+			}	
+
+
+
 			char minUID[4]; //we only need the first four dig to see if its a UUSER
-			strncpy(minUID, line + 5, 4);
+			strncpy(minUID, line + 5, uidLen);
 			long int UID = strtol(minUID, NULL, 10);
-			
+				
 		
 			if(UID >= 1000){
 //				printf("Line: %s", line);
