@@ -64,15 +64,15 @@ static int isUserPID(long processNum){
 				uid /= 10;
 				uidLen++;
 			}	
-
+			uid = getuid();
 
 
 			char minUID[4]; //we only need the first four dig to see if its a UUSER
 			strncpy(minUID, line + 5, uidLen);
-			long int UID = strtol(minUID, NULL, 10);
+			long int uidInFile = strtol(minUID, NULL, 10);
 				
 		
-			if(UID >= 1000){
+			if(uidInFile == uid){
 //				printf("Line: %s", line);
 //				printf("String: %s\n", minUID);
 //				printf("UID: %ld\n\n", UID);
