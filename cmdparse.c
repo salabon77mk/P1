@@ -63,6 +63,9 @@ int parse_cmd( int argc, char *argv[] ) {
             case 'c':
                 prev = 'c';
                 break;
+            case ':':
+                printf("Option '-%c' requires an argument\n", optopt);
+                break;
             case '?':
                 if (optopt == '-') {
                     switch (prev) {
@@ -76,9 +79,13 @@ int parse_cmd( int argc, char *argv[] ) {
                             break;
                     }
                 } else {
+                    printf("Invalid option %c\n", optopt);
                     return(EXIT_FAILURE);
                 }
             default:
+                printf("The option '-%c' is invalid.\n", optopt);
+                printf("Please use this format: -p [PID] -s -U -S -v -c");
+                return(EXIT_FAILURE);
                 break;
         }
     }
