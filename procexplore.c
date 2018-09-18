@@ -8,6 +8,14 @@
 #include "procexplore.h"
 
 //First function should return only the PID specified
+#ifndef PATH_LEN
+#define PATH_LEN 1048
+#endif
+
+#ifndef LINE_LEN
+#define LINE_LEN 256
+#endif
+
 
 
 static int isUserPID(long processNum);
@@ -68,11 +76,11 @@ long int getSinglePID(long int PID){
 
 
 static int isUserPID(long processNum){
-	char filepath[256];
-	char line[100];
+	char filepath[PATH_LEN];
+	char line[LINE_LEN];
 	FILE *fptr;
 	
-	snprintf(filepath, 256, "/proc/%ld/status", processNum);
+	snprintf(filepath, PATH_LEN, "/proc/%ld/status", processNum);
 
 	fptr = fopen(filepath, "r");
 
@@ -81,7 +89,7 @@ static int isUserPID(long processNum){
 	}	
 
 
-	while(fgets(line, 100, fptr)){
+	while(fgets(line, LINE_LEN, fptr)){
 		
 		if(strncmp(line, "Uid:", 4) == 0){
 			long int uid  = getuid();
