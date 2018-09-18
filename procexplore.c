@@ -21,7 +21,7 @@ long int * getPID(long int * arr, size_t size){
 	DIR *dir = opendir("/proc");
 
 	while((dp=readdir(dir)) != NULL){
-		int count = 0;
+
 		if(!isdigit(*dp->d_name)){
 			continue;	}
 
@@ -39,6 +39,33 @@ long int * getPID(long int * arr, size_t size){
 	return arr;	
 
 }
+
+// TEST THIS ONE
+long int getSinglePID(long int PID){
+	struct dirent *dp;
+	DIR *dir = opendir("/proc");
+
+	while((dp=readdir(dir)) != NULL){
+		long int currPID = -1;
+
+		if(!isdigit(*dp->d_name)){
+			continue;
+		}
+	
+		sscanf(&(*dp->d_name), "%ld", &currPID);
+
+		if(currPID == PID){
+			//Return PID so it'll work with other funcs
+			return PID;
+		}
+	
+	}
+	//PID NOT FOUND
+	return -1;
+
+}
+
+
 
 static int isUserPID(long processNum){
 	char filepath[256];
@@ -95,7 +122,10 @@ static int isUserPID(long processNum){
 size_t totalElements(long int *arr, size_t arrSize){
 	size_t count = 0;
 	for(int i = 0; i < arrSize/sizeof(long int); i++){
-		count++;			
+		if(arr[i] == 0){
+			break;
+		}		
+		count++;
 	}
 	return count;
 
