@@ -21,7 +21,7 @@
 static int isUserPID(long processNum);
 
 
-long int * getPID(long int * arr, size_t size){
+void getPID(long int * arr, size_t size){
 	struct dirent *dp;
 	int arrElement = 0;
 	long int *ptrArr = arr;
@@ -44,12 +44,12 @@ long int * getPID(long int * arr, size_t size){
 		
 	}
 	arr = ptrArr;
-	return arr;	
+	
 
 }
 
 // TEST THIS ONE
-long int getSinglePID(long int PID){
+long int getSinglePID(long int *arr){
 	struct dirent *dp;
 	DIR *dir = opendir("/proc");
 
@@ -61,10 +61,10 @@ long int getSinglePID(long int PID){
 		}
 	
 		sscanf(&(*dp->d_name), "%ld", &currPID);
-
-		if(currPID == PID){
+		//It's an array here because we pass arrays in through main
+		if(currPID == arr[0]){
 			//Return PID so it'll work with other funcs
-			return PID;
+			return currPID;
 		}
 	
 	}
@@ -129,7 +129,7 @@ static int isUserPID(long processNum){
 
 size_t totalElements(long int *arr, size_t arrSize){
 	size_t count = 0;
-	for(int i = 0; i < arrSize/sizeof(long int); i++){
+	for(int i = 0; i < arrSize; i++){
 		if(arr[i] == 0){
 			break;
 		}		

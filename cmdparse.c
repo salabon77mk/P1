@@ -2,21 +2,19 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-################################################################################
-#
-# Variable declaration and initilization section.
-# Each of the following flag variables are marked as extern in cmdparse.h
-#
-# flag_p : NULL if unspecified,                        POS INT if specified
-# flag_s : 0 if state should be hidden,                1 if it should be shown
-# flag_U : 0 if user time should be hidden,            1 if it should be shown
-# flag_S : 0 if system time should be hidden,          1 if it should be shown
-# flag_v : 0 if virtual memory should be hidden,       1 if it should be shown
-# flag_c : 0 if command line code should be hidden,    1 if it should be shown
-#
-# All flags have defaults which are specified below, except for flag_p.
-#
-################################################################################
+/////////////////////////////////////////////////////////////////////////////////
+// Variable declaration and initilization section.
+// Each of the following flag variables are marked as extern in cmdparse.h
+//
+// flag_p : NULL if unspecified,                        POS INT if specified
+// flag_s : 0 if state should be hidden,                1 if it should be shown 
+// flag_U : 0 if user time should be hidden,            1 if it should be shown
+// flag_S : 0 if system time should be hidden,          1 if it should be shown
+// flag_v : 0 if virtual memory should be hidden,       1 if it should be shown
+// flag_c : 0 if command line code should be hidden,    1 if it should be shown
+//
+// All flags have defaults which are specified below, except for flag_p.
+/////////////////////////////////////////////////////////////////////////////////
 
 int flag_p;
 int flag_s = 0;

@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 
-long int * getPID(long int * arr, size_t size);
-long int getSinglePID(long int PID);
+void getPID(long int * arr, size_t size);
+long int getSinglePID(long int *arr);
 size_t totalElements(long int *arr, size_t arrSize);
