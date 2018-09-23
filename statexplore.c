@@ -23,9 +23,12 @@ static void readStatm(long int pid, struct pidStats *pidStat);
 static void readCmdline(long int pid, struct pidStats *pidStat);
 static void readStat(long int pid, struct pidStats *pidStat);
 
+
+// Fills out the pidStats struct array by calling relevant helper functions
+
 void getpidinfo(long int *pids, struct pidStats **stats, size_t statStructCount){
 	for(size_t i = 0; i < statStructCount ; i++){
-		char pidChar[11]; //PID can go up to 2 something billion
+		char pidChar[11]; //PID can go up to 2 something billion so we need 10 to represent billion and 1 for NULL
 		snprintf(pidChar, 11, "%lu", pids[i]);
 
 		sscanf(pidChar, "%d", &(stats[i]->pid));
@@ -36,7 +39,7 @@ void getpidinfo(long int *pids, struct pidStats **stats, size_t statStructCount)
 
 }
 
-
+// Helper function that reads the stat file
 static void readStat(long int pid, struct pidStats *pidStat){
 	char filepath[DEFAULT_ARR_SIZE];
 	char line[BUFF_SIZE];
@@ -45,7 +48,8 @@ static void readStat(long int pid, struct pidStats *pidStat){
 	snprintf(filepath, DEFAULT_ARR_SIZE, "/proc/%ld/stat", pid);
 	fptr = fopen(filepath, "r");
 
-	if(!fptr){	
+	if(!fptr){
+		fclose(fptr);	
 		return;
 	}	
 	
@@ -53,33 +57,31 @@ static void readStat(long int pid, struct pidStats *pidStat){
 	char *lineptr = line;
 	char token[2] = " ";
 	fgets(line, BUFF_SIZE, fptr);
-//	printf("LINE: %s \n NUM: %d \n", line, count);
 
-	int count = 0;
+	int count = 0; //keep track of which string we're looking at
 	char* holdRes = strtok(lineptr, token);  
 	while(holdRes != NULL){
 	
 	if(count == 2){
-//		printf("STATE: %s\n", holdRes);
 	       sscanf(holdRes, "%c", &(pidStat->state));	
 	}
 
 	if(count == 13){
-//		printf("UTIME: %s\n", holdRes);
 	       sscanf(holdRes, "%lu", &(pidStat->utime));	
 	}
 
 	if(count ==14){
+	       sscanf(holdRes, "%lu", &(pidStat->stime));	
 	}
 
-	holdRes = strtok(NULL, token);
+	holdRes = strtok(NULL, token); //get next token
 	count++;
 	}
+	fclose(fptr);	
 
 }
 
-
-
+// Helper function that reads the statm file
 static void readStatm(long int pid, struct pidStats *pidStat){
 	char filepath[DEFAULT_ARR_SIZE];
 	char line[BUFF_SIZE];
@@ -98,12 +100,11 @@ static void readStatm(long int pid, struct pidStats *pidStat){
 	char* holdRes = strtok(lineptr, token);  
 	sscanf(holdRes, "%lu", &(pidStat->size));
 	
-	
+	fclose(fptr);	
 	
 }
 
-
-
+// Helper function that reads the cmdline file
 static void readCmdline(long int pid, struct pidStats *pidStat){
 	char filepath[DEFAULT_ARR_SIZE];
 	FILE *fptr;
@@ -121,14 +122,13 @@ static void readCmdline(long int pid, struct pidStats *pidStat){
 	
 	if(fileSize > 0){
 		if(fileCont[fileSize-1] == '\n'){
-			fileCont[fileSize-1] = '\0';
+			fileCont[fileSize-1] = '\0'; //ensure it the string ends with null
 		}
-
 		pidStat->cmdline = fileCont;
-	
 	}
+
 	else{
-		pidStat->cmdline = "";
+		pidStat->cmdline = ""; //empty file
 	}
 
 	fclose(fptr);

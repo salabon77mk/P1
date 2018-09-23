@@ -8,4 +8,7 @@ DEPS = procexplore.h statexplore.h cmdparse.h
 makemain: main.o statexplore.o procexplore.o cmdparse.o
 	$(CC) -o main main.o statexplore.o procexplore.o cmdparse.o
  
+.PHONY: clean
 
+clean:
+	rm *.o

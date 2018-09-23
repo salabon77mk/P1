@@ -7,7 +7,7 @@
 #define DEF_ARR_SIZE 1024
 #endif
 
-void printProc(struct pidStats **stats, size_t statStructCount);
+static void printProc(struct pidStats **stats, size_t statStructCount);
 
 int main( int argc, char *argv[] ){
 	parse_cmd(argc, argv);
@@ -51,9 +51,8 @@ int main( int argc, char *argv[] ){
 	return EXIT_SUCCESS;	    
 }
 
-
-void printProc(struct pidStats **stats, size_t statStructCount){
-	
+// Helper function to print out relevant info depending on cmdParse.c's flags
+static void printProc(struct pidStats **stats, size_t statStructCount){	
 	for (size_t i = 0; i < statStructCount; i++) {
 		// pid:
 		printf("%d: ", stats[i]->pid);

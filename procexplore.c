@@ -1,4 +1,3 @@
-// Proc Explore
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,7 +6,6 @@
 #include <ctype.h>
 #include "procexplore.h"
 
-//First function should return only the PID specified
 #ifndef PATH_LEN
 #define PATH_LEN 1048
 #endif
@@ -17,9 +15,14 @@
 #endif
 
 
-
 static int isUserPID(long processNum);
 
+/* Fill out an array with all pids belonging to the user
+ *
+ * 
+ * *arr: pointer to an array
+ * size: used to keep track of array indices
+ */
 
 void getPID(long int * arr, size_t size){
 	struct dirent *dp;
@@ -35,8 +38,7 @@ void getPID(long int * arr, size_t size){
 
 		long int pidNum = strtol(dp->d_name, NULL, 10);
 		int i = isUserPID(pidNum);
-//		printf("PIDNUM %ld\n", pidNum);
-//		printf("AM I UNDER USER %d\n", i);		
+
 		if( i  == 1 && arrElement < size / (sizeof(long int) )){
 			ptrArr[arrElement] = pidNum;
 			arrElement++;		
@@ -44,11 +46,14 @@ void getPID(long int * arr, size_t size){
 		
 	}
 	arr = ptrArr;
-	
-
+	closedir(dir);
 }
 
-// TEST THIS ONE
+/* Only called if -p flag is present
+ * Returns the PID if it exists
+ * Otherwise returns -1 if not found
+ *
+ */
 long int getSinglePID(long int *arr){
 	struct dirent *dp;
 	DIR *dir = opendir("/proc");
@@ -64,17 +69,23 @@ long int getSinglePID(long int *arr){
 		//It's an array here because we pass arrays in through main
 		if(currPID == arr[0]){
 			//Return PID so it'll work with other funcs
+			closedir(dir);
 			return currPID;
 		}
 	
 	}
-	//PID NOT FOUND
+	//PID NOT FOUNiD
+	closedir(dir);
 	return -1;
 
 }
 
-
-
+/* Helper function for getPID
+ * Verifies that the current pid belongs to the current user
+ * Will return 1 if pid is the users
+ *             0 if pid is not users
+ *            -1 if the status is empty or doesn't exist
+ */
 static int isUserPID(long processNum){
 	char filepath[PATH_LEN];
 	char line[LINE_LEN];
@@ -85,12 +96,10 @@ static int isUserPID(long processNum){
 	fptr = fopen(filepath, "r");
 
 	if(!fptr){	
-		return 0;
+		return -1;
 	}	
 
-
-	while(fgets(line, LINE_LEN, fptr)){
-		
+	while(fgets(line, LINE_LEN, fptr)){		
 		if(strncmp(line, "Uid:", 4) == 0){
 			long int uid  = getuid();
 			int uidLen = 0;
@@ -108,9 +117,6 @@ static int isUserPID(long processNum){
 				
 		
 			if(uidInFile == uid){
-//				printf("Line: %s", line);
-//				printf("String: %s\n", minUID);
-//				printf("UID: %ld\n\n", UID);
 				fclose(fptr);
 				return 1;
 			}
@@ -120,21 +126,24 @@ static int isUserPID(long processNum){
 				return 0;
 			}
 		}
-			
 	}
-	return EXIT_FAILURE;
-	
+	fclose(fptr);
+	return -1;	
 }
 
+/* Counts up the number of elements within the array
+ *
+ *
+ */
 size_t totalElements(long int *arr, size_t arrSize){
 	size_t count = 0;
-	for(size_t i = 0; i < arrSize; i++){
+
+	for(size_t i = 0; i < arrSize; i++){	
 		if(arr[i] == 0){
 			break;
 		}		
 		count++;
 	}
 	return count;
-
 }
 
