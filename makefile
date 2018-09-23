@@ -1,12 +1,13 @@
 CC=gcc
 CFLAGS=-Wall -Wextra
 DEPS = procexplore.h statexplore.h cmdparse.h
+OBJ = main.o statexplore.o procexplore.o cmdparse.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-makemain: main.o statexplore.o procexplore.o cmdparse.o
-	$(CC) -o main main.o statexplore.o procexplore.o cmdparse.o
+cs537: $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
  
 .PHONY: clean
 
