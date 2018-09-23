@@ -17,12 +17,6 @@ int main( int argc, char *argv[] ){
 	size_t arrSize = 0;
 	struct pidStats **statsArr;
 
-
-        if(!pidArr){
-		printf("Out of memory");
-		return EXIT_FAILURE;
-	}	
-
 	//single PID
 	if(flag_p){
 		pidArr[0] = flag_p;
@@ -46,7 +40,7 @@ int main( int argc, char *argv[] ){
 		arrSize = totalElements(ptrPIDS, DEF_ARR_SIZE);
 		statsArr = malloc(sizeof(struct pidStats *) * arrSize);
 	
-		for(int i = 0; i < arrSize; i++){
+		for(size_t i = 0; i < arrSize; i++){
 			statsArr[i] =  malloc(sizeof(struct pidStats));
 		}
 		getpidinfo(ptrPIDS, statsArr, arrSize);
@@ -60,7 +54,7 @@ int main( int argc, char *argv[] ){
 
 void printProc(struct pidStats **stats, size_t statStructCount){
 	
-	for (int i = 0; i < statStructCount; i++) {
+	for (size_t i = 0; i < statStructCount; i++) {
 		// pid:
 		printf("%d: ", stats[i]->pid);
 

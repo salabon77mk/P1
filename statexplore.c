@@ -19,9 +19,12 @@
 #define DEFAULT_ARR_SIZE 256
 #endif
 
+static void readStatm(long int pid, struct pidStats *pidStat);
+static void readCmdline(long int pid, struct pidStats *pidStat);
+static void readStat(long int pid, struct pidStats *pidStat);
 
 void getpidinfo(long int *pids, struct pidStats **stats, size_t statStructCount){
-	for(int i = 0; i < statStructCount ; i++){
+	for(size_t i = 0; i < statStructCount ; i++){
 		char pidChar[11]; //PID can go up to 2 something billion
 		snprintf(pidChar, 11, "%lu", pids[i]);
 
@@ -103,7 +106,6 @@ static void readStatm(long int pid, struct pidStats *pidStat){
 
 static void readCmdline(long int pid, struct pidStats *pidStat){
 	char filepath[DEFAULT_ARR_SIZE];
-	char line[BUFF_SIZE];
 	FILE *fptr;
 	
 	snprintf(filepath, BUFF_SIZE, "/proc/%ld/cmdline", pid);

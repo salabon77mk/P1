@@ -23,7 +23,7 @@ static int isUserPID(long processNum);
 
 void getPID(long int * arr, size_t size){
 	struct dirent *dp;
-	int arrElement = 0;
+	size_t arrElement = 0;
 	long int *ptrArr = arr;
 
 	DIR *dir = opendir("/proc");
@@ -120,16 +120,15 @@ static int isUserPID(long processNum){
 				return 0;
 			}
 		}
-		
-		
-	
+			
 	}
+	return EXIT_FAILURE;
 	
 }
 
 size_t totalElements(long int *arr, size_t arrSize){
 	size_t count = 0;
-	for(int i = 0; i < arrSize; i++){
+	for(size_t i = 0; i < arrSize; i++){
 		if(arr[i] == 0){
 			break;
 		}		

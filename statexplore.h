@@ -11,6 +11,3 @@ struct pidStats {
 
 
 void getpidinfo(long int *pids, struct pidStats **stats, size_t statStructCount);
-static void readStatm(long int pid, struct pidStats *pidStat);
-static void readCmdline(long int pid, struct pidStats *pidStat);
-static void readStat(long int pid, struct pidStats *pidStat);
