@@ -7,7 +7,7 @@
 // Each of the following flag variables are marked as extern in cmdparse.h
 //
 // flag_p : NULL if unspecified,                        POS INT if specified
-// flag_s : 0 if state should be hidden,                1 if it should be shown 
+// flag_s : 0 if state should be hidden,                1 if it should be shown
 // flag_U : 0 if user time should be hidden,            1 if it should be shown
 // flag_S : 0 if system time should be hidden,          1 if it should be shown
 // flag_v : 0 if virtual memory should be hidden,       1 if it should be shown
@@ -48,6 +48,7 @@ int parse_cmd( int argc, char *argv[] ) {
                 prev = 's';
                 break;
             case 'U':
+                flag_U = 1;
                 prev = 'U';
                 break;
             case 'S':
@@ -59,6 +60,7 @@ int parse_cmd( int argc, char *argv[] ) {
                 prev = 'v';
                 break;
             case 'c':
+                flag_c = 1;
                 prev = 'c';
                 break;
             case ':':
@@ -67,8 +69,17 @@ int parse_cmd( int argc, char *argv[] ) {
             case '?':
                 if (optopt == '-') {
                     switch (prev) {
+                        case 's':
+                            flag_s = 0;
+                            break;
                         case 'U':
                             flag_U = 0;
+                            break;
+                        case 'S':
+                            flag_S = 0;
+                            break;
+                        case 'v':
+                            flag_v = 0;
                             break;
                         case 'c':
                             flag_c = 0;
@@ -79,7 +90,9 @@ int parse_cmd( int argc, char *argv[] ) {
                 } else {
                     printf("Invalid option %c\n", optopt);
                     return(EXIT_FAILURE);
+                    break;
                 }
+                break;
             default:
                 printf("The option '-%c' is invalid.\n", optopt);
                 printf("Please use this format: -p [PID] -s -U -S -v -c");
