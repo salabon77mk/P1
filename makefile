@@ -6,7 +6,7 @@ OBJ = main.o statexplore.o procexplore.o cmdparse.o
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-cs537: $(OBJ)
+537ps: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
  
 .PHONY: clean
