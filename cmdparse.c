@@ -47,7 +47,7 @@ int parse_cmd( int argc, char *argv[] ) {
             case 'p':
                 check_p = atoi(optarg);
                 if (check_p == 0) {
-                    printf("Option '-%c' requires a valid argument\n", optopt);
+                    printf("Option '-p' requires a valid argument\n");
                     err_pres = 1;
                 } else {
                     prev = 'p';
