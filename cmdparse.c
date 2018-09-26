@@ -46,6 +46,8 @@ int parse_cmd( int argc, char *argv[] ) {
     char prev; // Previously parsed option
     opterr = 0; // Turn off getopt error handling
 
+    int index; // Tracks parser location
+
     int check_p;
     while((opt = getopt(argc, argv, ":p:sUSvc")) != -1) {
         switch (opt) {
@@ -115,6 +117,11 @@ int parse_cmd( int argc, char *argv[] ) {
                 err_pres = 1;
                 break;
         }
+    }
+
+    for (index = optind; index < argc; index++) {
+        printf("Invalid argument: %s\n", argv[index]);
+        err_pres = 1;
     }
 
     if (err_pres) {
