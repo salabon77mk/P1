@@ -1,3 +1,7 @@
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
 // Stat explore
 // -s, defaults to false, Single char, located in proc/<pid>/stat, 3rd field
 // -U, defaults to true,  User time in seconds?, located in stat, 14th field

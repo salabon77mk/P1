@@ -1,3 +1,9 @@
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
+
+
 #include "cmdparse.h"
 #include "statexplore.h"
 #include "procexplore.h"

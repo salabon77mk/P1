@@ -1,3 +1,7 @@
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
 //Cmd parse
 
 extern int flag_p;

@@ -1,4 +1,7 @@
-// Test name
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
 #include <stdlib.h>
 
 

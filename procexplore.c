@@ -1,3 +1,7 @@
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>

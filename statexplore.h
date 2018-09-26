@@ -1,3 +1,7 @@
+/* Authors:
+ * Mykola Kusyy
+ * Garrett McLaughlin
+ */
 // Stat headers
 #include <stdlib.h>
 struct pidStats {
