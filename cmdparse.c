@@ -12,6 +12,7 @@
 // flag_S : 0 if system time should be hidden,          1 if it should be shown
 // flag_v : 0 if virtual memory should be hidden,       1 if it should be shown
 // flag_c : 0 if command line code should be hidden,    1 if it should be shown
+// err_pres : 0 if no errors                            1 if there are errors
 //
 // All flags have defaults which are specified below, except for flag_p.
 /////////////////////////////////////////////////////////////////////////////////
@@ -22,6 +23,8 @@ int flag_U = 1;
 int flag_S = 0;
 int flag_v = 0;
 int flag_c = 1;
+
+int err_pres = 0;
 
 
 /**
@@ -36,12 +39,20 @@ int flag_c = 1;
 int parse_cmd( int argc, char *argv[] ) {
     int opt;   // Option to be parsed
     char prev; // Previously parsed option
-    while((opt = getopt(argc, argv, "p:sUSvc")) != -1) {
-        opterr = 0; // Turn off getopt error handling
+    opterr = 0; // Turn off getopt error handling
+
+    int check_p;
+    while((opt = getopt(argc, argv, ":p:sUSvc")) != -1) {
         switch (opt) {
             case 'p':
-                flag_p = atoi(optarg);
-                prev = 'p';
+                check_p = atoi(optarg);
+                if (check_p == 0) {
+                    printf("Option '-%c' requires a valid argument\n", optopt);
+                    err_pres = 1;
+                } else {
+                    prev = 'p';
+                    flag_p = check_p;
+                }
                 break;
             case 's':
                 flag_s = 1;
@@ -65,6 +76,7 @@ int parse_cmd( int argc, char *argv[] ) {
                 break;
             case ':':
                 printf("Option '-%c' requires an argument\n", optopt);
+                err_pres = 1;
                 break;
             case '?':
                 if (optopt == '-') {
@@ -89,16 +101,21 @@ int parse_cmd( int argc, char *argv[] ) {
                     }
                 } else {
                     printf("Invalid option %c\n", optopt);
-                    return(EXIT_FAILURE);
+                    err_pres = 1;
                     break;
                 }
                 break;
             default:
                 printf("The option '-%c' is invalid.\n", optopt);
-                printf("Please use this format: -p [PID] -s -U -S -v -c");
-                return(EXIT_FAILURE);
+                err_pres = 1;
                 break;
         }
     }
-    return(EXIT_SUCCESS);
+
+    if (err_pres) {
+        printf("Please use this format: 537ps -p [PID] -s -U -S -v -c\n");
+        return (EXIT_FAILURE);
+    } else {
+        return(EXIT_SUCCESS);
+    }
 }

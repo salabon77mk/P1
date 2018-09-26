@@ -10,7 +10,12 @@
 static void printProc(struct pidStats **stats, size_t statStructCount);
 
 int main( int argc, char *argv[] ){
-	parse_cmd(argc, argv);
+	int check = parse_cmd(argc, argv);
+
+	// Exit if getopt was unsuccessfully parsed
+	if (check) {
+        exit(check);
+	}
 
 	long pidArr[DEF_ARR_SIZE];
 	long *ptrPIDS = pidArr;
@@ -30,7 +35,7 @@ int main( int argc, char *argv[] ){
 		statsArr = malloc(sizeof(struct pidStats *));
 		statsArr[0] = malloc(sizeof(struct pidStats));
 		getpidinfo(ptrPIDS, statsArr, arrSize);
-		printProc(statsArr, arrSize);			
+		printProc(statsArr, arrSize);
 
 	}
 
@@ -39,20 +44,20 @@ int main( int argc, char *argv[] ){
 		getPID(ptrPIDS, DEF_ARR_SIZE);
 		arrSize = totalElements(ptrPIDS, DEF_ARR_SIZE);
 		statsArr = malloc(sizeof(struct pidStats *) * arrSize);
-	
+
 		for(size_t i = 0; i < arrSize; i++){
 			statsArr[i] =  malloc(sizeof(struct pidStats));
 		}
 		getpidinfo(ptrPIDS, statsArr, arrSize);
 		printProc(statsArr, arrSize);
-			
+
 	}
 
-	return EXIT_SUCCESS;	    
+	return EXIT_SUCCESS;
 }
 
 // Helper function to print out relevant info depending on cmdParse.c's flags
-static void printProc(struct pidStats **stats, size_t statStructCount){	
+static void printProc(struct pidStats **stats, size_t statStructCount){
 	for (size_t i = 0; i < statStructCount; i++) {
 		// pid:
 		printf("%d: ", stats[i]->pid);
@@ -61,7 +66,7 @@ static void printProc(struct pidStats **stats, size_t statStructCount){
 			printf("%c ", stats[i]->state);
 		}
 		if (flag_U) {
-			printf("utime=%lu ", stats[i]->utime); 
+			printf("utime=%lu ", stats[i]->utime);
 		}
 		if (flag_S) {
 			printf("stime=%lu ", stats[i]->stime);
