@@ -31,7 +31,7 @@ static int isUserPID(long processNum);
 void getPID(long int * arr, size_t size){
 	struct dirent *dp;
 	size_t arrElement = 0;
-	long int *ptrArr = arr;
+//	long int *ptrArr = arr;
 
 	DIR *dir = opendir("/proc");
 
@@ -44,12 +44,12 @@ void getPID(long int * arr, size_t size){
 		int i = isUserPID(pidNum);
 
 		if( i  == 1 && arrElement < size / (sizeof(long int) )){
-			ptrArr[arrElement] = pidNum;
+			arr[arrElement] = pidNum;
 			arrElement++;		
 		}
 		
 	}
-	arr = ptrArr;
+
 	closedir(dir);
 }
 
